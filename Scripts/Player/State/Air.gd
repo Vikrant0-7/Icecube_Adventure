@@ -3,9 +3,18 @@
 extends PlayerState
 
 
-export (float,500,5000,10) var jump_velocity = 100
-export (float,0,10000,10) var GRAVITY = 1000
-export (float,0,1,.01) var DRAG = 1
+export var jump_height : float                    #how many blocks high should player jump
+export var time_to_peak : float              #time it takes to reach jump_height
+export var time_to_descent : float           #time it takes to fall back to ground from jump_height 
+export var one_block_size : int =  64             #height of one block
+
+onready var jump_velocity : float = ((2.0 * jump_height * one_block_size) / time_to_peak) * -1.0  #calulates jump velocity
+onready var jump_gravity : float = ((-2.0 * jump_height * one_block_size) / (time_to_peak * time_to_peak)) * -1.0 #calculates gravity during jump
+
+#equals to jump_gravity if time_to_peak = time_to_descent
+onready var fall_gravity : float = ((-2.0 * jump_height * one_block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
+
+export (float,0,10,1) var DRAG = 10
 
 var can_jump : bool = true
 
@@ -19,19 +28,25 @@ func enter(msg := {}) -> void:
 	#jump if do_jump arguement is passed
 	if msg.has("do_jump"):
 		if msg.get("do_jump") and can_jump:
-			player.velocity.y = -jump_velocity
+			player.velocity.y = jump_velocity
 			can_jump = false
 
 
 #virtual method called when physhics is update updated
 func fixed_update(delta : float) -> void:
 	
-	player.velocity.y += GRAVITY * delta  #applying gravity
+	player.velocity.y += get_gravity() * delta  #applying gravity
 	
 	if player.dir.x != 0:
-		player.velocity.x = lerp(player.velocity.x, player.dir.x * Run.speed, DRAG)  #applying special air movement if direction key is pressed
+		if Input.is_action_pressed("Sprint"):
+			Run.spd = player.dir.x * Run.sprint_speed
+			Run.accel = Run.sprint_acceleration
+		else:
+			Run.spd = player.dir.x * Run.speed
+			Run.accel = Run.acceleration
+		player.velocity.x = lerp(player.velocity.x, Run.spd, Run.accel)  #applying special air movement if direction key is pressed
 	else:
-		player.velocity.x = lerp(player.velocity.x, 0, DRAG)  #applying drag in air to stop movement
+		player.velocity.x = lerp(player.velocity.x, 0, delta * DRAG)  #applying drag in air to stop movement
 	
 	
 	player.velocity = player.move_and_slide(player.velocity, Vector2.UP)
@@ -59,3 +74,6 @@ func state_update() -> void:
 func exit() -> void:
 	player.velocity.y = 100  #setting some speed in y direction so is_on_floor works properly
 
+#returns value of gravity directed by player y velocity
+func get_gravity() -> float:
+	return jump_gravity if player.velocity.y < 0.0 else fall_gravity

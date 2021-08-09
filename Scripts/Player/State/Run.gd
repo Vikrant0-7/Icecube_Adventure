@@ -5,10 +5,14 @@ extends PlayerState
 export (float,0,1000,10) var speed = 100
 export (float,0,1,0.1) var acceleration = 0.1
 export (float,0,1,0.1) var friction = 0.1
-
+export (float,0,1000,10) var sprint_speed = 100
+export (float,0,1,0.1) var sprint_acceleration = 0.1
 
 onready var Idle := get_parent().get_node("Idle")
 onready var Air := get_parent().get_node("Air")
+
+var accel : float
+var spd : float
 
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:
@@ -17,14 +21,24 @@ func enter(msg := {}) -> void:
 
 #virtual method called when physhics is update updated
 func fixed_update(delta : float) -> void:
+	
+	
 	player.velocity.y = 100 #adding downwards velocity so is_on_floor() works properly
+	
+	if Input.is_action_pressed("Sprint"):
+		spd = player.dir.x * sprint_speed
+		accel = sprint_acceleration
+	else:
+		spd = player.dir.x * speed
+		accel = acceleration
 	
 	#making player move as per user input
 	if player.dir.x != 0:
-		player.velocity.x = lerp(player.velocity.x, player.dir.x * speed, acceleration)
+		player.velocity.x = lerp(player.velocity.x, spd, accel)
+	
 	#making player stop if no user input
 	else:
-		player.velocity.x = lerp(player.velocity.x, player.dir.x * speed, friction)
+		player.velocity.x = lerp(player.velocity.x, 0, friction)
 	
 	player.velocity = player.move_and_slide(player.velocity,Vector2.UP) #applying velocity to player
 	
