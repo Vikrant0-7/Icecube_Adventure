@@ -18,6 +18,12 @@ func fixed_update(delta) -> void:
 	#If user let go jump key then mamke player able to jump again
 	if player.dir.y == 0:
 		Air.can_jump = true
+	
+	if Run.stamina > 0:
+		Run.stamina = Run.timer(Run.stamina, delta, -1)
+	if Run.stamina <= 0:
+		Run.can_sprint = true
+		Run.stamina = 0
 
 
 #special virtual method for logic to switch states
