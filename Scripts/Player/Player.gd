@@ -7,6 +7,7 @@ var dir : Vector2
 var velocity : Vector2
 
 
+#to get input from users
 func get_input() -> void:
 	dir = Vector2.ZERO
 	
@@ -21,5 +22,3 @@ func get_input() -> void:
 
 func _physics_process(delta):
 	get_input()
-	print(is_on_floor())
-	print($State_Machine/Air.can_jump)
