@@ -33,8 +33,6 @@ func enter(msg := {}) -> void:
 	if msg.has("disable_control"):
 		control_enabled = false
 		$Timer.start(msg.get("disable_control"))
-	else:
-		control_enabled = true
 	#jump if do_jump arguement is passed
 	if msg.has("do_jump"):
 		if msg.get("do_jump") and can_jump:
@@ -96,6 +94,7 @@ func exit(new_state := "") -> void:
 	if not new_state == "WallJump":
 		jumps = 0
 	can_jump = true
+	control_enabled = true
 	player.velocity.y = 100  #setting some speed in y direction so is_on_floor works properly
 
 #returns value of gravity directed by player y velocity
