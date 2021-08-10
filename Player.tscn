@@ -51,13 +51,14 @@ acceleration = 0.4
 friction = 0.3
 sprint_speed = 600.0
 sprint_acceleration = 0.8
-sprint_stamina = 1.0
+sprint_stamina = 10.0
 
 [node name="Air" type="Node" parent="State_Machine"]
 script = ExtResource( 6 )
 jump_height = 4.0
 time_to_peak = 0.4
 time_to_descent = 0.35
+max_jumps = 4
 DRAG = 4.0
 
 [node name="Camera2D" type="Camera2D" parent="."]

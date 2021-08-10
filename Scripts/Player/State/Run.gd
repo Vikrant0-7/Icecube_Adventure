@@ -28,9 +28,9 @@ func fixed_update(delta : float) -> void:
 	
 	player.velocity.y = 100 #adding downwards velocity so is_on_floor() works properly
 	
-	if Input.is_action_pressed("Sprint") and can_sprint:
+	if Input.is_action_pressed("Sprint") and can_sprint and not is_zero_approx(player.velocity.x):
 		stamina = timer(stamina,delta)
-		spd = player.dir.x * sprint_speed
+		spd = sprint_speed
 		accel = sprint_acceleration
 		if stamina >= sprint_stamina and can_sprint:
 			stamina = sprint_stamina * sprint_tiredness
@@ -41,23 +41,18 @@ func fixed_update(delta : float) -> void:
 		if  stamina <= 0 and not can_sprint:
 			stamina = 0
 			can_sprint = true
-		spd = player.dir.x * speed
+		spd = speed
 		accel = acceleration
 	
 	#making player move as per user input
 	if player.dir.x != 0:
-		player.velocity.x = lerp(player.velocity.x, spd, accel)
+		player.velocity.x = lerp(player.velocity.x, player.dir.x * spd ,accel)
 	
 	#making player stop if no user input
 	else:
 		player.velocity.x = lerp(player.velocity.x, 0, friction)
 	
 	player.velocity = player.move_and_slide(player.velocity,Vector2.UP) #applying velocity to player
-	
-	#making player able to jump again if he let jump button go
-	if player.dir.y == 0:
-		Air.can_jump = true
-	
 
 #special virtual method for logic to switch states
 func state_update() -> void:
@@ -67,12 +62,12 @@ func state_update() -> void:
 		state_machine.transition_to("Idle")
 	
 	#switching state to air such that player can jump if user press jump button
-	if player.dir.y == -1 and Air.can_jump:
-		state_machine.transition_to("Air",{do_jump = true})
+	if Input.is_action_just_pressed("Jump"):
+		state_machine.transition_to("Air",{do_jump = true,_speed = spd , _accel = accel })
 	
 	#switching to air if player is not on ground such that player falls
 	if not player.is_on_floor():
-		state_machine.transition_to("Air",{do_jump = false})
+		state_machine.transition_to("Air",{do_jump = false, _speed = spd , _accel = accel})
 
 func timer(time : float, delta : float, modifier : float = 1) -> float:
 	return time + (1 * delta * modifier)

@@ -15,9 +15,6 @@ func enter(msg := {}) -> void:
 
 #virtual method called when physhics is update updated
 func fixed_update(delta) -> void:
-	#If user let go jump key then mamke player able to jump again
-	if player.dir.y == 0:
-		Air.can_jump = true
 	
 	if Run.stamina > 0:
 		Run.stamina = Run.timer(Run.stamina, delta, -1)
@@ -33,7 +30,7 @@ func state_update() -> void:
 		state_machine.transition_to("Run")
 	
 	#Switch to Air state such that player can jump
-	if player.dir.y == -1 and player.is_on_floor() and Air.can_jump:
+	if Input.is_action_just_pressed("Jump") and player.is_on_floor():
 		state_machine.transition_to("Air",{do_jump = true})
 	
 	#Switch to Air state such that player isn't jumping
