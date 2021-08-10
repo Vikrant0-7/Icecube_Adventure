@@ -26,10 +26,15 @@ onready var Idle := get_parent().get_node("Idle")
 
 var air_speed : float
 var air_accel : float
+var control_enabled : bool = true
 
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:
-	
+	if msg.has("disable_control"):
+		control_enabled = false
+		$Timer.start(msg.get("disable_control"))
+	else:
+		control_enabled = true
 	#jump if do_jump arguement is passed
 	if msg.has("do_jump"):
 		if msg.get("do_jump") and can_jump:
@@ -55,8 +60,10 @@ func fixed_update(delta : float) -> void:
 	
 	
 	
-	if player.dir.x != 0:
+	if player.dir.x != 0 and control_enabled:
 		player.velocity.x = lerp(player.velocity.x, air_speed * player.dir.x , air_accel)  #applying special air movement if direction key is pressed
+	elif not control_enabled:
+		player.velocity.x = player.velocity.x
 	else:
 		player.velocity.x = lerp(player.velocity.x, 0, delta * DRAG)  #applying drag in air to stop movement
 	
@@ -71,6 +78,9 @@ func state_update() -> void:
 	if player.is_on_floor() and is_zero_approx(player.velocity.x):
 		state_machine.transition_to("Idle")
 	
+	if player.is_on_wall() and player.velocity.y > 0:
+		state_machine.transition_to("WallJump", {jump_force = jump_velocity})
+	
 	#switch to Run if player is on floor and want to move 
 	if player.is_on_floor() and player.dir.x != 0:
 		state_machine.transition_to("Run")
@@ -80,11 +90,18 @@ func state_update() -> void:
 		state_machine.transition_to("Run")
 
 #virtual method called when state is being switch from this state to other
-func exit() -> void:
-	jumps = 0
+func exit(new_state := "") -> void:
+	if not $Timer.is_stopped():
+		$Timer.stop()
+	if not new_state == "WallJump":
+		jumps = 0
 	can_jump = true
 	player.velocity.y = 100  #setting some speed in y direction so is_on_floor works properly
 
 #returns value of gravity directed by player y velocity
 func get_gravity() -> float:
 	return jump_gravity if player.velocity.y < 0.0 else fall_gravity
+
+
+func on_timeout():
+	control_enabled = true

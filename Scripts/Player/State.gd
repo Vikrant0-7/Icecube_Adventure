@@ -19,5 +19,5 @@ func state_update() -> void:
 func enter(msg  := {}) -> void:
 	pass
 
-func exit() -> void:
+func exit(new_state := "") -> void:
 	pass

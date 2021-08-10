@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Player/State_Machine.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scripts/Player/State/Run.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/Player/State/Air.gd" type="Script" id=6]
 [ext_resource path="res://Roboto-Black.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://Scripts/Player/State/WallJump.gd" type="Script" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 29.3091, 28.786 )
@@ -61,5 +62,15 @@ time_to_descent = 0.35
 max_jumps = 4
 DRAG = 4.0
 
+[node name="Timer" type="Timer" parent="State_Machine/Air"]
+
+[node name="WallJump" type="Node" parent="State_Machine"]
+script = ExtResource( 8 )
+wall_jump_force = 500.0
+no_control_state = 2.0
+wall_gravity = 500.0
+
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+
+[connection signal="timeout" from="State_Machine/Air/Timer" to="State_Machine/Air" method="on_timeout"]
