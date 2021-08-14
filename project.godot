@@ -50,7 +50,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Match Stick Adventure"
+config/name="Icecube Adventure"
 config/icon="res://icon.png"
 
 [editor_plugins]
