@@ -16,7 +16,7 @@ onready var jump_gravity : float = ((-2.0 * jump_height * one_block_size) / (tim
 #equals to jump_gravity if time_to_peak = time_to_descent
 onready var fall_gravity : float = ((-2.0 * jump_height * one_block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
 onready var gliding_gravity : float = ((-0.5 * jump_height * one_block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates gliding gravity
-export (float,0,10,1) var DRAG = 10
+export (float,0,1,0.001) var drag = 0
 
 var can_jump : bool = true
 var jumps : int = 0
@@ -33,7 +33,7 @@ onready var Idle := get_parent().get_node("Idle")
 var air_speed : float
 var air_accel : float
 var control_enabled : bool = true
-var is_gliding : bool = false
+var use_jet : bool = false
 
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:
@@ -50,31 +50,23 @@ func enter(msg := {}) -> void:
 	if msg.has("_speed"):
 		air_speed = msg.get("_speed")
 	if msg.has("_accel"):
-		air_accel = msg.get("_accel") * 0.2
+		air_accel = msg.get("_accel") * 0.5
 
 
 #virtual method called when physhics is update updated
 func fixed_update(delta : float) -> void:
-
-	if Input.is_action_pressed("Jump") and Input.is_action_pressed("Sprint") and player.velocity.y > 0 and can_glide and not abs(player.velocity.x) < 75:
-		is_gliding = true
-	else:
-		is_gliding = false
-
-	if Input.is_action_just_pressed("Jump") and jumps < max_jumps and not player.is_on_floor() and not is_gliding and can_double_jump:
+	
+	if Input.is_action_just_pressed("Jump") and jumps < max_jumps and not player.is_on_floor() and can_double_jump:
 		jumps += 1
 		player.velocity.y = jump_velocity / (jumps * 0.75)
-
+	
 	player.velocity.y += get_gravity() * delta  #applying gravity
 	
 	
-	
-	if player.dir.x != 0 and control_enabled and not is_gliding:
+	if player.dir.x != 0 and control_enabled:
 		player.velocity.x = lerp(player.velocity.x, air_speed * player.dir.x , air_accel)  #applying special air movement if direction key is pressed
-	elif not control_enabled or is_gliding:
-		player.velocity.x = player.velocity.x
 	else:
-		player.velocity.x = lerp(player.velocity.x, 0, delta * DRAG)  #applying drag in air to stop movement
+		player.velocity.x = lerp(player.velocity.x, 0,drag)  #applying drag in air to stop movement
 	
 	
 	player.velocity = player.move_and_slide(player.velocity, Vector2.UP)
@@ -97,6 +89,9 @@ func state_update() -> void:
 	#switch to Run so Player's 'x' speed can be reduced to zero
 	if player.is_on_floor() and not is_zero_approx(player.velocity.x):
 		state_machine.transition_to("Run")
+	
+	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("Jump") and is_in_range(player.velocity.y, 20):
+		state_machine.transition_to("Jet")
 
 #virtual method called when state is being switch from this state to other
 func exit(new_state := "") -> void:
@@ -112,8 +107,6 @@ func exit(new_state := "") -> void:
 func get_gravity() -> float:
 	if player.velocity.y < 0.0:
 		return jump_gravity
-	elif is_gliding:
-		return gliding_gravity
 	else:
 		return fall_gravity
 

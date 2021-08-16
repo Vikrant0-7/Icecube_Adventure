@@ -10,3 +10,6 @@ func _ready() -> void:
 	player = owner as Player
 	
 	assert(player != null)
+
+func is_in_range(VAR, RANGE) -> bool:
+	return abs(VAR) < RANGE

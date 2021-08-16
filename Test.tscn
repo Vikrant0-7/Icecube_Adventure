@@ -63,4 +63,4 @@ collision_mask = 2
 [node name="Scale" type="TileMap" parent="."]
 tile_set = SubResource( 3 )
 format = 1
-tile_data = PoolIntArray( 327685, 0, 0, 393221, 0, 0, 458757, 0, 0 )
+tile_data = PoolIntArray( 327685, 0, 0, 458717, 0, 0, 458719, 0, 0, 458721, 0, 0, 458723, 0, 0, 458725, 0, 0, 393221, 0, 0, 524252, 0, 0, 524254, 0, 0, 524256, 0, 0, 524258, 0, 0, 524260, 0, 0, 524262, 0, 0, 458757, 0, 0 )
