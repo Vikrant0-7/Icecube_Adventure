@@ -28,16 +28,20 @@ func fixed_update(delta : float) -> void:
 	
 	player.velocity.y = 100 #adding downwards velocity so is_on_floor() works properly
 	
+	 #increasing max speed and accel if user wats to sprint
 	if Input.is_action_pressed("Sprint") and can_sprint and not is_zero_approx(player.velocity.x):
-		stamina = timer(stamina,delta)
+		stamina = timer(stamina,delta) #adding second using timer function
 		spd = sprint_speed
 		accel = sprint_acceleration
+		#if time sprinted exceeds sprint stamina then player is no longer to sprint
 		if stamina >= sprint_stamina and can_sprint:
-			stamina = sprint_stamina * sprint_tiredness
+			stamina = sprint_stamina * sprint_tiredness #managing how long player is unable to sprint
 			can_sprint = false
 	else:
+		#substracting seconds elapsed untill it becomes zero
 		if stamina > 0:
 			stamina = timer(stamina,delta,-1)
+		#giving back player ability to sprint again
 		if  stamina <= 0 and not can_sprint:
 			stamina = 0
 			can_sprint = true
@@ -58,7 +62,7 @@ func fixed_update(delta : float) -> void:
 func state_update() -> void:
 	
 	#switch state to idle if player is not moving and no input is given by user
-	if is_zero_approx(player.velocity.x) and player.dir.x == 0:
+	if is_in_range(player.velocity.x,10) and player.dir.x == 0:
 		state_machine.transition_to("Idle")
 	
 	#switching state to air such that player can jump if user press jump button
@@ -69,6 +73,7 @@ func state_update() -> void:
 	if not player.is_on_floor():
 		state_machine.transition_to("Air",{do_jump = false, _speed = spd , _accel = accel})
 
+#a simple timer function which adds or substract 1 float per second
 func timer(time : float, delta : float, modifier : float = 1) -> float:
 	return time + (1 * delta * modifier)
 

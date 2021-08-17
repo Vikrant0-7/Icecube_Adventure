@@ -15,6 +15,13 @@ func get_input() -> void:
 		dir.x -= 1
 	elif Input.is_action_pressed("Right"):
 		dir.x += 1
+	
+	if Input.is_action_pressed("Jump"):
+		dir.y -= 1
+	elif Input.is_action_pressed("duck"):
+		dir.y += 1
+
 
 func _physics_process(delta):
+	print(dir)
 	get_input()

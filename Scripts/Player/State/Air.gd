@@ -15,14 +15,13 @@ onready var jump_gravity : float = ((-2.0 * jump_height * one_block_size) / (tim
 
 #equals to jump_gravity if time_to_peak = time_to_descent
 onready var fall_gravity : float = ((-2.0 * jump_height * one_block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
-onready var gliding_gravity : float = ((-0.5 * jump_height * one_block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates gliding gravity
 export (float,0,1,0.001) var drag = 0
 
 var can_jump : bool = true
 var jumps : int = 0
 
 
-export var can_glide : bool = false
+export var can_jet : bool = false
 export var can_double_jump : bool = false
 export var can_wall_jump : bool = false
 
@@ -91,7 +90,7 @@ func state_update() -> void:
 		state_machine.transition_to("Run")
 	
 	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("Jump") and is_in_range(player.velocity.y, 20):
-		state_machine.transition_to("Jet")
+		state_machine.transition_to("Jet", {g = fall_gravity})
 
 #virtual method called when state is being switch from this state to other
 func exit(new_state := "") -> void:

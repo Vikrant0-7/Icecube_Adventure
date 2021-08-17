@@ -7,6 +7,7 @@ onready var Air := get_parent().get_node("Air")
 
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:
+	player.velocity = Vector2.ZERO
 	#If user let go jump key then mamke player able to jump again
 	if player.dir.y == 0:
 		Air.can_jump = true

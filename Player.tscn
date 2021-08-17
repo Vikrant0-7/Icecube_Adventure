@@ -73,6 +73,9 @@ wall_gravity = 500.0
 
 [node name="Jet" type="Node" parent="State_Machine"]
 script = ExtResource( 9 )
+time_to_react = 0.5
+max_speed = 60.0
+max_vertical_velocity = 70.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
