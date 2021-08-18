@@ -23,5 +23,4 @@ func get_input() -> void:
 
 
 func _physics_process(delta):
-	print(dir)
 	get_input()

@@ -34,11 +34,19 @@ var air_accel : float
 var control_enabled : bool = true
 var use_jet : bool = false
 
+var fall_slowly : bool = false
+
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:
 	if msg.has("disable_control"):
 		control_enabled = false
 		$Timer.start(msg.get("disable_control"))
+	
+	if msg.has("fall_slowly"):
+		fall_slowly = true
+	else:
+		fall_slowly = false
+	
 	#jump if do_jump arguement is passed
 	if msg.has("do_jump"):
 		if msg.get("do_jump") and can_jump:
@@ -104,7 +112,7 @@ func exit(new_state := "") -> void:
 
 #returns value of gravity directed by player y velocity
 func get_gravity() -> float:
-	if player.velocity.y < 0.0:
+	if player.velocity.y < 0.0 or fall_slowly:
 		return jump_gravity
 	else:
 		return fall_gravity
