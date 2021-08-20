@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://git_api.gdns"
 }, {
 "base": "KinematicBody2D",
+"class": "MovingPlatform",
+"language": "GDScript",
+"path": "res://Scripts/movingPlatform/MovingPlatform.gd"
+}, {
+"base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Scripts/Player/Player.gd"
@@ -36,6 +41,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "GitAPI": "",
+"MovingPlatform": "",
 "Player": "",
 "PlayerState": "",
 "State": "",

@@ -21,6 +21,9 @@ func get_input() -> void:
 	elif Input.is_action_pressed("duck"):
 		dir.y += 1
 
+func _process(delta: float) -> void:
+	print(global_position)
+	pass
 
 func _physics_process(delta):
 	get_input()

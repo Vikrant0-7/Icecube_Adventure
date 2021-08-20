@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Prefabs/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://pixel Scale.png" type="Texture" id=3]
+[ext_resource path="res://Prefabs/MovingPlatform.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -63,4 +64,8 @@ collision_mask = 2
 [node name="Scale" type="TileMap" parent="."]
 tile_set = SubResource( 3 )
 format = 1
-tile_data = PoolIntArray( 327685, 0, 0, 458717, 0, 0, 458719, 0, 0, 458721, 0, 0, 458723, 0, 0, 458725, 0, 0, 393221, 0, 0, 524252, 0, 0, 524254, 0, 0, 524256, 0, 0, 524258, 0, 0, 524260, 0, 0, 524262, 0, 0, 458757, 0, 0 )
+tile_data = PoolIntArray( 131060, 0, 0, 393201, 0, 0, 327685, 0, 0, 458717, 0, 0, 458719, 0, 0, 458721, 0, 0, 458723, 0, 0, 458725, 0, 0, 393221, 0, 0, 524252, 0, 0, 524254, 0, 0, 524256, 0, 0, 524258, 0, 0, 524260, 0, 0, 524262, 0, 0, 458757, 0, 0 )
+
+[node name="Line2D" parent="." instance=ExtResource( 4 )]
+position = Vector2( -1108.43, 272.786 )
+points = PoolVector2Array( -267.569, -104.786, 80.8661, -217.625, 382.925, -172.435, 185.516, 52.3251, -3.56763, 2.37842, -267.569, -104.786 )
