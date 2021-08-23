@@ -22,6 +22,9 @@ func fixed_update(delta) -> void:
 	if Run.stamina <= 0:
 		Run.can_sprint = true
 		Run.stamina = 0
+	var snap = Vector2.DOWN * 16 if player.is_on_floor() else Vector2.ZERO
+	player.velocity.y += 100
+	player.velocity = player.move_and_slide_with_snap(player.velocity,snap, Vector2.UP)
 
 
 #special virtual method for logic to switch states

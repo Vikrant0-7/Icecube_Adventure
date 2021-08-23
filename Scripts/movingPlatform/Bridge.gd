@@ -7,4 +7,7 @@ export var closed_loop : bool = false
 export var debug : bool = false
 
 func _ready() -> void:
-	moving_body.set_vars(speed,closed_loop,debug)
+	if not debug:
+		self_modulate.a = 0
+	
+	moving_body.set_vars(speed,closed_loop)

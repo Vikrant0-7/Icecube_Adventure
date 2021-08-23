@@ -55,8 +55,8 @@ func fixed_update(delta : float) -> void:
 	#making player stop if no user input
 	else:
 		player.velocity.x = lerp(player.velocity.x, 0, friction)
-	
-	player.velocity = player.move_and_slide(player.velocity,Vector2.UP) #applying velocity to player
+	var snap = Vector2.DOWN * 16 if player.is_on_floor() else Vector2.ZERO
+	player.velocity = player.move_and_slide_with_snap(player.velocity,snap, Vector2.UP) #applying velocity to player
 
 #special virtual method for logic to switch states
 func state_update() -> void:

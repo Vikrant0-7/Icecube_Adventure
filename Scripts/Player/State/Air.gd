@@ -28,6 +28,7 @@ export var can_wall_jump : bool = false
 
 onready var Run := get_parent().get_node("Run")
 onready var Idle := get_parent().get_node("Idle")
+onready var Jet := get_parent().get_node("Jet")
 
 var air_speed : float
 var air_accel : float
@@ -97,7 +98,7 @@ func state_update() -> void:
 	if player.is_on_floor() and not is_zero_approx(player.velocity.x):
 		state_machine.transition_to("Run")
 	
-	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("Jump") and is_in_range(player.velocity.y, 20):
+	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("Jump") and is_in_range(player.velocity.y, 10) and Jet.propultion_duration > 0:
 		state_machine.transition_to("Jet", {g = fall_gravity})
 
 #virtual method called when state is being switch from this state to other

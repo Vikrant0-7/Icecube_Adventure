@@ -83,4 +83,18 @@ propultion_duration = 5.0
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 
+[node name="Raycast" type="Node" parent="."]
+
+[node name="left" type="RayCast2D" parent="Raycast"]
+position = Vector2( -24, -8 )
+exclude_parent = false
+cast_to = Vector2( 0, 8 )
+collision_mask = 4
+
+[node name="right" type="RayCast2D" parent="Raycast"]
+position = Vector2( 24, -8 )
+exclude_parent = false
+cast_to = Vector2( 0, 8 )
+collision_mask = 4
+
 [connection signal="timeout" from="State_Machine/Air/Timer" to="State_Machine/Air" method="on_timeout"]

@@ -6,7 +6,6 @@ class_name MovingPlatform
 
 var speed : float
 var closed_loop : bool = false
-var debug : bool = false
 
 onready var path : Line2D = get_parent()
 
@@ -23,8 +22,6 @@ func _ready() -> void:
 	for i in range(points.size()):
 		points[i] += path.global_position
 		print(is_even(i))
-	if not debug:
-		path.clear_points()
 	global_position = points[0]
 	points_to_move = points
 
@@ -38,9 +35,9 @@ func _physics_process(delta: float) -> void:
 		dir = next_pos - global_position
 		dir = dir.normalized()
 		
-		velocity = dir * speed
+		velocity = dir * speed * delta
 		
-		velocity = move_and_slide(velocity)
+		global_position += velocity
 		
 		if(abs(global_position.x - next_move_pos.x) <= 0.7 and abs(global_position.y - next_move_pos.y) <= 0.7):
 			points_to_move.remove(0)
@@ -67,7 +64,6 @@ func invert(a : Array) -> Array:
 		b.append(a.pop_back())
 	return b
 
-func set_vars(a : float,b : bool,c : bool) -> void:
+func set_vars(a : float,b : bool) -> void:
 	speed = a
 	closed_loop = b
-	debug = c
