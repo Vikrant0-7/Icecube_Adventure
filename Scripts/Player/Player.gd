@@ -8,6 +8,7 @@ var velocity : Vector2
 
 var platform_velocity
 
+
 #to get input from users
 func get_input() -> void:
 	dir = Vector2.ZERO
@@ -26,18 +27,6 @@ func get_input() -> void:
 func _physics_process(delta : float):
 	get_input()
 
-func is_on_platform() -> bool:
-	$Raycast/left.force_raycast_update()
-	$Raycast/right.force_raycast_update()
-	
-	var l = $Raycast/left.get_collider()
-	var r = $Raycast/right.get_collider()
-	
-	if $Raycast/left.is_colliding():
-		platform_velocity = $Raycast/left.get_collider().velocity
-	elif $Raycast/right.is_colliding():
-		platform_velocity = $Raycast/right.get_collider().velocity
-	else:
-		platform_velocity = 0
-	
-	return $Raycast/left.is_colliding() or $Raycast/right.is_colliding()
+func lit() -> void:
+	print("yeh")
+

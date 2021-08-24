@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Player/State_Machine.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -16,7 +16,13 @@ extents = Vector2( 29.3091, 28.786 )
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 7 )
 
-[node name="Player" type="KinematicBody2D"]
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( -28, -60, 28, -60, 28, -4, -28, -4 )
+
+[node name="Player" type="KinematicBody2D" groups=[
+"Player",
+]]
+collision_mask = 34
 script = ExtResource( 3 )
 
 [node name="sprite" type="Sprite" parent="."]
@@ -62,13 +68,14 @@ time_to_peak = 0.4
 time_to_descent = 0.35
 max_jumps = 4
 drag = 0.02
-can_jet = true
+can_double_jump = true
+can_wall_jump = true
 
 [node name="Timer" type="Timer" parent="State_Machine/Air"]
 
 [node name="WallJump" type="Node" parent="State_Machine"]
 script = ExtResource( 8 )
-wall_jump_force = 500.0
+wall_jump_force = 700.0
 no_control_state = 2.0
 wall_gravity = 500.0
 
@@ -96,5 +103,8 @@ position = Vector2( 24, -8 )
 exclude_parent = false
 cast_to = Vector2( 0, 8 )
 collision_mask = 4
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 3 )
 
 [connection signal="timeout" from="State_Machine/Air/Timer" to="State_Machine/Air" method="on_timeout"]
