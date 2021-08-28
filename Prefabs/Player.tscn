@@ -54,7 +54,7 @@ script = ExtResource( 4 )
 
 [node name="Run" type="Node" parent="State_Machine"]
 script = ExtResource( 5 )
-speed = 400.0
+SPEED = 5.0
 acceleration = 0.4
 friction = 0.3
 sprint_speed = 600.0
@@ -63,11 +63,12 @@ sprint_stamina = 10.0
 
 [node name="Air" type="Node" parent="State_Machine"]
 script = ExtResource( 6 )
-jump_height = 4.0
+jump_height = 4.5
 time_to_peak = 0.4
 time_to_descent = 0.35
 max_jumps = 4
 drag = 0.02
+can_jet = true
 can_double_jump = true
 can_wall_jump = true
 
@@ -75,34 +76,20 @@ can_wall_jump = true
 
 [node name="WallJump" type="Node" parent="State_Machine"]
 script = ExtResource( 8 )
-wall_jump_force = 700.0
+WALL_JUMP_FORCE = 5.0
 no_control_state = 2.0
-wall_gravity = 500.0
+WALL_GRAVITY = 5.0
 
 [node name="Jet" type="Node" parent="State_Machine"]
 script = ExtResource( 9 )
 debug = true
 time_to_react = 0.5
-max_speed = 200.0
-max_vertical_velocity = 200.0
+MAX_SPEED = 1.0
+MAX_VERTICAL_VELOCITY = 2.0
 propultion_duration = 5.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-
-[node name="Raycast" type="Node" parent="."]
-
-[node name="left" type="RayCast2D" parent="Raycast"]
-position = Vector2( -24, -8 )
-exclude_parent = false
-cast_to = Vector2( 0, 8 )
-collision_mask = 4
-
-[node name="right" type="RayCast2D" parent="Raycast"]
-position = Vector2( 24, -8 )
-exclude_parent = false
-cast_to = Vector2( 0, 8 )
-collision_mask = 4
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 3 )

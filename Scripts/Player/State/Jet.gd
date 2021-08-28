@@ -3,9 +3,12 @@ extends PlayerState
 export (bool) var debug = false
 
 export (float,0,5,0.5) var time_to_react = 1
-export (float,0,200,10) var max_speed = 40
-export (float,0,200,10) var max_vertical_velocity = 30
+export (float,0,200) var MAX_SPEED = 40
+export (float,0,200) var MAX_VERTICAL_VELOCITY = 30
 export (float,0,100,1) var propultion_duration = 10.0
+
+onready var max_speed = MAX_SPEED * G_Vars.block_size
+onready var max_vertical_velocity = MAX_VERTICAL_VELOCITY * G_Vars.block_size
 
 func fixed_update(delta : float) -> void:
 

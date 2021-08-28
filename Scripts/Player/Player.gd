@@ -6,8 +6,6 @@ var dir : Vector2
 
 var velocity : Vector2
 
-var platform_velocity
-
 
 #to get input from users
 func get_input() -> void:

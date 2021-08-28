@@ -2,9 +2,13 @@
 
 extends PlayerState
 
-export (float,100,1000,50) var wall_jump_force 
+export (float,1,100) var WALL_JUMP_FORCE
+
+onready var wall_jump_force = WALL_JUMP_FORCE * G_Vars.block_size
+ 
 export (float,0,2,0.5) var no_control_state
-export (float,100,500,10) var wall_gravity
+export (float,0,500) var WALL_GRAVITY
+onready var wall_gravity = WALL_GRAVITY * G_Vars.block_size
 
 var jump
 

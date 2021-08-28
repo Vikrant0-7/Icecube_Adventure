@@ -6,15 +6,14 @@ extends PlayerState
 export var jump_height : float                    #how many blocks high should player jump
 export var time_to_peak : float              #time it takes to reach jump_height
 export var time_to_descent : float           #time it takes to fall back to ground from jump_height 
-export var one_block_size : int =  64             #height of one block
 
 export (int,1,4,1) var max_jumps = 2
 
-onready var jump_velocity : float = ((2.0 * jump_height * one_block_size) / time_to_peak) * -1.0  #calulates jump velocity
-onready var jump_gravity : float = ((-2.0 * jump_height * one_block_size) / (time_to_peak * time_to_peak)) * -1.0 #calculates gravity during jump
+onready var jump_velocity : float = ((2.0 * jump_height * G_Vars.block_size) / time_to_peak) * -1.0  #calulates jump velocity
+onready var jump_gravity : float = ((-2.0 * jump_height * G_Vars.block_size) / (time_to_peak * time_to_peak)) * -1.0 #calculates gravity during jump
 
 #equals to jump_gravity if time_to_peak = time_to_descent
-onready var fall_gravity : float = ((-2.0 * jump_height * one_block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
+onready var fall_gravity : float = ((-2.0 * jump_height * G_Vars.block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
 export (float,0,1,0.001) var drag = 0
 
 var can_jump : bool = true

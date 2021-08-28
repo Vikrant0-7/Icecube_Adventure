@@ -53,6 +53,10 @@ _global_script_class_icons={
 config/name="Icecube Adventure"
 config/icon="res://icon.png"
 
+[autoload]
+
+G_Vars="*res://Scripts/Globals/G_Vars.gd"
+
 [editor_plugins]
 
 enabled=PoolStringArray(  )

@@ -2,7 +2,10 @@
 
 extends PlayerState
 
-export (float,0,1000,10) var speed = 100
+export (float,0,100) var SPEED
+
+onready var speed = SPEED * G_Vars.block_size
+
 export (float,0,1,0.1) var acceleration = 0.1
 export (float,0,1,0.1) var friction = 0.1
 export (float,0,1000,10) var sprint_speed = 100
