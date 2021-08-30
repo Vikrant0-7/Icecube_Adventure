@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Player/State_Machine.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Player/Player.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Player/Player.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Player/State/Idle.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/Player/State/Run.gd" type="Script" id=5]
@@ -11,13 +11,13 @@
 [ext_resource path="res://Scripts/Player/State/Jet.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 29.3091, 28.786 )
+extents = Vector2( 15.0256, 14.9945 )
 
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 7 )
 
 [sub_resource type="OccluderPolygon2D" id=3]
-polygon = PoolVector2Array( -28, -60, 28, -60, 28, -4, -28, -4 )
+polygon = PoolVector2Array( -13.9844, -47.1797, 14, -47.1562, 13.9922, -46.1797, 15.0043, -46.1775, 15.0078, -45.1719, 15.9922, -45.1641, 15.9922, -17.1562, 15.0154, -17.1719, 15.0156, -16.1875, 14.0234, -16.1641, 14, -15.1484, -13.9919, -15.2096, -13.9919, -16.1743, -15.0255, -16.194, -15.0058, -17.1783, -15.9901, -17.1881, -15.9609, -45.1953, -15, -45.2031, -15, -46.1953, -13.9922, -46.1953 )
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
@@ -26,18 +26,16 @@ collision_mask = 34
 script = ExtResource( 3 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 0, -31.1729 )
 texture = ExtResource( 2 )
 
 [node name="collision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -31.1729 )
 shape = SubResource( 1 )
 
 [node name="State_Display" type="Label" parent="."]
-margin_left = -19.6431
-margin_top = -80.0
-margin_right = 20.3569
-margin_bottom = -61.0
+margin_left = -16.0
+margin_top = -35.0
+margin_right = 16.0
+margin_bottom = -16.0
 custom_fonts/font = SubResource( 2 )
 text = "RUN"
 align = 1
@@ -57,16 +55,16 @@ script = ExtResource( 5 )
 SPEED = 5.0
 acceleration = 0.4
 friction = 0.3
-sprint_speed = 600.0
+SPRINT_SPEED = 10.0
 sprint_acceleration = 0.8
 sprint_stamina = 10.0
 
 [node name="Air" type="Node" parent="State_Machine"]
 script = ExtResource( 6 )
+max_jumps = 4
 jump_height = 4.5
 time_to_peak = 0.4
 time_to_descent = 0.35
-max_jumps = 4
 drag = 0.02
 can_jet = true
 can_double_jump = true
@@ -90,8 +88,16 @@ propultion_duration = 5.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+zoom = Vector2( 0.5, 0.5 )
+smoothing_speed = 300.0
+drag_margin_left = 0.86
+drag_margin_top = 1.0
+drag_margin_bottom = 1.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 0, 31.173 )
 occluder = SubResource( 3 )
 
 [connection signal="timeout" from="State_Machine/Air/Timer" to="State_Machine/Air" method="on_timeout"]

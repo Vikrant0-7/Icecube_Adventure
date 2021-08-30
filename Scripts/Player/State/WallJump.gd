@@ -27,7 +27,7 @@ func fixed_update(delta : float) -> void:
 
 func state_update() -> void:
 	if not player.is_on_wall() and not player.is_on_floor():
-		state_machine.transition_to("Air",{disable_control = no_control_state})
+		state_machine.transition_to("Air",{disable_control = no_control_state, dir = -player.dir.x})
 	if player.is_on_floor():
 		state_machine.transition_to("Idle")
 	if player.is_on_floor() and player.dir.x != 0:

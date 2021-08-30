@@ -4,6 +4,9 @@ extends Node
 
 var state_machine : StateMachine = null
 
+func start() -> void:
+	pass
+
 func handle_input(event : InputEvent) -> void:
 	pass
 

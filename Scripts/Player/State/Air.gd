@@ -3,15 +3,14 @@
 extends PlayerState
 
 
-export var jump_height : float                    #how many blocks high should player jump
+export (int,1,4,1) var max_jumps = 2
+
+export var jump_height : float               #how many blocks high should player jump
 export var time_to_peak : float              #time it takes to reach jump_height
 export var time_to_descent : float           #time it takes to fall back to ground from jump_height 
 
-export (int,1,4,1) var max_jumps = 2
-
 onready var jump_velocity : float = ((2.0 * jump_height * G_Vars.block_size) / time_to_peak) * -1.0  #calulates jump velocity
 onready var jump_gravity : float = ((-2.0 * jump_height * G_Vars.block_size) / (time_to_peak * time_to_peak)) * -1.0 #calculates gravity during jump
-
 #equals to jump_gravity if time_to_peak = time_to_descent
 onready var fall_gravity : float = ((-2.0 * jump_height * G_Vars.block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
 export (float,0,1,0.001) var drag = 0
@@ -33,7 +32,7 @@ var air_speed : float
 var air_accel : float
 var control_enabled : bool = true
 var use_jet : bool = false
-
+var dir : float
 var fall_slowly : bool = false
 
 #method is called when player's state is switched to this state
@@ -41,6 +40,7 @@ func enter(msg := {}) -> void:
 	if msg.has("disable_control"):
 		control_enabled = false
 		$Timer.start(msg.get("disable_control"))
+		dir = msg.get("dir")
 	
 	if msg.has("fall_slowly"):
 		fall_slowly = true
@@ -72,6 +72,8 @@ func fixed_update(delta : float) -> void:
 	
 	if player.dir.x != 0 and control_enabled:
 		player.velocity.x = lerp(player.velocity.x, air_speed * player.dir.x , air_accel)  #applying special air movement if direction key is pressed
+	if player.dir.x == dir and not control_enabled:
+		player.velocity.x = lerp(player.velocity.x, air_speed * player.dir.x , air_accel)
 	else:
 		player.velocity.x = lerp(player.velocity.x, 0,drag)  #applying drag in air to stop movement
 	
@@ -97,7 +99,7 @@ func state_update() -> void:
 	if player.is_on_floor() and not is_zero_approx(player.velocity.x):
 		state_machine.transition_to("Run")
 	
-	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("Jump") and is_in_range(player.velocity.y, 10) and Jet.propultion_duration > 0:
+	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("enable_special") and is_in_range(player.velocity.y, 10) and Jet.propultion_duration > 0:
 		state_machine.transition_to("Jet", {g = fall_gravity})
 
 #virtual method called when state is being switch from this state to other
@@ -106,7 +108,7 @@ func exit(new_state := "") -> void:
 		$Timer.stop()
 	if not new_state == "WallJump":
 		jumps = 0
-	can_jump = true
+		can_jump = true
 	control_enabled = true
 	player.velocity.y = 100  #setting some speed in y direction so is_on_floor works properly
 

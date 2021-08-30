@@ -20,6 +20,7 @@ func _ready() -> void:
 	for child in get_children():
 		child.state_machine = self
 	state.enter()
+	state.start()
 
 
 
