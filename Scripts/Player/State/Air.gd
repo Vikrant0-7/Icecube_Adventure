@@ -18,8 +18,8 @@ export (float,0,1,0.001) var drag = 0
 var can_jump : bool = true
 var jumps : int = 0
 
-
-export var can_jet : bool = false
+#powerups
+export var can_jet : bool = false 
 export var can_double_jump : bool = false
 export var can_wall_jump : bool = false
 
@@ -28,12 +28,13 @@ onready var Run := get_parent().get_node("Run")
 onready var Idle := get_parent().get_node("Idle")
 onready var Jet := get_parent().get_node("Jet")
 
-var air_speed : float
-var air_accel : float
-var control_enabled : bool = true
-var use_jet : bool = false
-var dir : float
-var fall_slowly : bool = false
+
+#internal vars
+var air_speed : float  #speed in air supplied by other states
+var air_accel : float  #acceleration in air supplied by other states
+var control_enabled : bool = true #for how long control is disabled i.e. player can move in one dir only
+var dir : float #dir in which player can move in controls disabled state
+var fall_slowly : bool = false #make player fall slowly to make it look cool. Supplied by other states
 
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:
@@ -63,22 +64,27 @@ func enter(msg := {}) -> void:
 #virtual method called when physhics is update updated
 func fixed_update(delta : float) -> void:
 	
+	#double jump
 	if Input.is_action_just_pressed("Jump") and jumps < max_jumps and not player.is_on_floor() and can_double_jump:
 		jumps += 1
 		player.velocity.y = jump_velocity / (jumps * 0.75)
 	
 	player.velocity.y += get_gravity() * delta  #applying gravity
 	
-	
+	#moving player normally
 	if player.dir.x != 0 and control_enabled:
 		player.velocity.x = lerp(player.velocity.x, air_speed * player.dir.x , air_accel)  #applying special air movement if direction key is pressed
+	
+	#moving player in dir opposite to wall if did wall jump
 	if player.dir.x == dir and not control_enabled:
 		player.velocity.x = lerp(player.velocity.x, air_speed * player.dir.x , air_accel)
+	
+	#stopping player if no input is given by user
 	else:
 		player.velocity.x = lerp(player.velocity.x, 0,drag)  #applying drag in air to stop movement
 	
 	
-	player.velocity = player.move_and_slide(player.velocity, Vector2.UP)
+	player.velocity = player.move_and_slide(player.velocity, Vector2.UP) #applying motion
 
 
 #special virtual method for logic to switch states
@@ -88,6 +94,7 @@ func state_update() -> void:
 	if player.is_on_floor() and is_zero_approx(player.velocity.x):
 		state_machine.transition_to("Idle")
 	
+	#if player is on wall switch to wall_jump
 	if player.is_on_wall() and player.velocity.y > 0 and can_wall_jump:
 		state_machine.transition_to("WallJump", {jump_force = jump_velocity})
 	
@@ -99,6 +106,7 @@ func state_update() -> void:
 	if player.is_on_floor() and not is_zero_approx(player.velocity.x):
 		state_machine.transition_to("Run")
 	
+	#if player wants to use jet
 	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("enable_special") and is_in_range(player.velocity.y, 10) and Jet.propultion_duration > 0:
 		state_machine.transition_to("Jet", {g = fall_gravity})
 
