@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "EnemyStupid",
+"language": "GDScript",
+"path": "res://Scripts/Enemies/Stupid/Enemy_Stupid.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -38,14 +43,21 @@ _global_script_classes=[ {
 "class": "StateMachine",
 "language": "GDScript",
 "path": "res://Scripts/Player/State_Machine.gd"
+}, {
+"base": "State",
+"class": "StupidState",
+"language": "GDScript",
+"path": "res://Scripts/Enemies/Stupid/States/StupidState.gd"
 } ]
 _global_script_class_icons={
+"EnemyStupid": "",
 "GitAPI": "",
 "MovingPlatform": "",
 "Player": "",
 "PlayerState": "",
 "State": "",
-"StateMachine": ""
+"StateMachine": "",
+"StupidState": ""
 }
 
 [application]

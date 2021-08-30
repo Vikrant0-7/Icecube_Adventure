@@ -68,7 +68,7 @@ func fixed_update(delta : float) -> void:
 func state_update() -> void:
 	
 	#switch state to idle if player is not moving and no input is given by user
-	if is_in_range(player.velocity.x,10) and player.dir.x == 0:
+	if G_Vars.is_in_range(player.velocity.x,10) and player.dir.x == 0:
 		state_machine.transition_to("Idle")
 	
 	#switching state to air such that player can jump if user press jump button

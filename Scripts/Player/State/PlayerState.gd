@@ -11,5 +11,3 @@ func _ready() -> void:
 	
 	assert(player != null)
 
-func is_in_range(VAR, RANGE) -> bool:
-	return abs(VAR) < RANGE

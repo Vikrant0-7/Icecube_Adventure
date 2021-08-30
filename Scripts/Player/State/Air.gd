@@ -107,7 +107,7 @@ func state_update() -> void:
 		state_machine.transition_to("Run")
 	
 	#if player wants to use jet
-	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("enable_special") and is_in_range(player.velocity.y, 10) and Jet.propultion_duration > 0:
+	if Input.is_action_pressed("Sprint") and Input.is_action_pressed("enable_special") and G_Vars.is_in_range(player.velocity.y, 10) and Jet.propultion_duration > 0:
 		state_machine.transition_to("Jet", {g = fall_gravity})
 
 #virtual method called when state is being switch from this state to other
