@@ -10,13 +10,13 @@
 [ext_resource path="res://Scripts/Player/State/WallJump.gd" type="Script" id=8]
 [ext_resource path="res://Scripts/Player/State/Jet.gd" type="Script" id=9]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15.0256, 14.9945 )
 
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 7 )
 
-[sub_resource type="OccluderPolygon2D" id=4]
+[sub_resource type="OccluderPolygon2D" id=3]
 polygon = PoolVector2Array( -13.9844, -47.1797, 14, -47.1562, 13.9922, -46.1797, 15.0043, -46.1775, 15.0078, -45.1719, 15.9922, -45.1641, 15.9922, -17.1562, 15.0154, -17.1719, 15.0156, -16.1875, 14.0234, -16.1641, 14, -15.1484, -13.9919, -15.2096, -13.9919, -16.1743, -15.0255, -16.194, -15.0058, -17.1783, -15.9901, -17.1881, -15.9609, -45.1953, -15, -45.2031, -15, -46.1953, -13.9922, -46.1953 )
 
 [node name="Player" type="KinematicBody2D" groups=[
@@ -29,7 +29,7 @@ script = ExtResource( 3 )
 texture = ExtResource( 2 )
 
 [node name="collision" type="CollisionShape2D" parent="."]
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="State_Display" type="Label" parent="."]
 margin_left = -16.0
@@ -98,6 +98,6 @@ editor_draw_drag_margin = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 position = Vector2( 0, 31.173 )
-occluder = SubResource( 4 )
+occluder = SubResource( 3 )
 
 [connection signal="timeout" from="State_Machine/Air/Timer" to="State_Machine/Air" method="on_timeout"]
