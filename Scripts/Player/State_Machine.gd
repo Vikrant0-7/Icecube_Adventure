@@ -18,22 +18,26 @@ func _ready() -> void:
 	
 	#assigns self as state machine to all childers
 	for child in get_children():
-		child.state_machine = self
+		if child.has_method("enter"):
+			child.state_machine = self
 	state.enter()
 	state.start()
 
 
 
 func _unhandled_input(event : InputEvent) -> void:
-	state.handle_input(event)
+	if owner.is_processing_unhandled_input():
+		state.handle_input(event)
 
 func _process(delta : float) -> void:
-	state.update(delta)
+	if owner.is_processing():
+		state.update(delta)
 
 func _physics_process(delta : float) -> void:
-	state.fixed_update(delta)
-	state.state_update()
-	get_parent().get_node("State_Display").text = state.name #to display state for debugging perpose
+	if owner.is_physics_processing():
+		state.fixed_update(delta)
+		state.state_update()
+		get_parent().get_node("State_Display").text = state.name #to display state for debugging perpose
 
 #to switch states
 func transition_to(state_name : String, msg : Dictionary = {}) -> void:

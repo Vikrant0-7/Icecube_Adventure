@@ -52,8 +52,8 @@ func enter(msg := {}) -> void:
 	if msg.has("do_jump"):
 		if msg.get("do_jump") and can_jump:
 			player.velocity.y = jump_velocity
-			jumps += 1
 			can_jump = false
+	jumps += 1
 	
 	if msg.has("_speed"):
 		air_speed = msg.get("_speed")
