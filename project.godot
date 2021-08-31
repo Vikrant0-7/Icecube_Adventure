@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Enemies/Stupid/Enemy_Stupid.gd"
 }, {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://git_api.gdns"
-}, {
 "base": "KinematicBody2D",
 "class": "MovingPlatform",
 "language": "GDScript",
@@ -51,7 +46,6 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "EnemyStupid": "",
-"GitAPI": "",
 "MovingPlatform": "",
 "Player": "",
 "PlayerState": "",
@@ -75,7 +69,7 @@ enabled=PoolStringArray(  )
 
 [gdnative]
 
-singletons=[ "res://git_api.gdnlib" ]
+singletons=[  ]
 
 [input]
 
@@ -123,6 +117,7 @@ duck={
 2d_physics/layer_4="Powerups"
 2d_physics/layer_5="Pickups"
 2d_physics/layer_6="MovingPlatforms"
+2d_physics/layer_7="Enemy_Areas"
 
 [locale]
 
