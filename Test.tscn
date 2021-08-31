@@ -16,6 +16,12 @@ tile_data = PoolIntArray( 327644, 0, 458752, 327662, 0, 458752, 327666, 0, 45875
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( -1000, 400 )
+Air/time_to_peak = 0.35
+Air/time_to_descent = 0.45
+Air/drag = 0.02
+Air/max_jumps = 1
+Air/can_jet = true
 
 [node name="Enemy_Basic" parent="." instance=ExtResource( 3 )]
 position = Vector2( -304, 392 )
+is_stupid = false

@@ -2,17 +2,15 @@
 
 extends PlayerState
 
-export (float) var SPEED
+var acceleration : float = 0.1 
+var friction :float = 0.1
+var sprint_stamina : float = 2  #for how long player can sprint
+var sprint_tiredness : float = 2 #for how long player can't run after consuming all stamina
 
-onready var speed = SPEED * G_Vars.block_size
+var speed : float 
 
-export (float,0,1,0.1) var acceleration = 0.1 
-export (float,0,1,0.1) var friction = 0.1
-export (float) var SPRINT_SPEED = 100
-onready var sprint_speed = SPRINT_SPEED * G_Vars.block_size
-export (float,0,1,0.1) var sprint_acceleration = 0.1
-export (float,0,10,0.5) var sprint_stamina = 2  #for how long player can sprint
-export (float,0,10,0.5) var sprint_tiredness = 2 #for how long player can't run after consuming all stamina
+var sprint_speed : float
+var sprint_acceleration = 0.1
 
 onready var Idle := get_parent().get_node("Idle")
 onready var Air := get_parent().get_node("Air")
@@ -23,10 +21,16 @@ var can_sprint : bool = false
 var stamina : float #current stamina of player
 
 #method is called when player's state is switched to this state
-
 func enter(msg := {}) -> void:
 	pass
 
+func start() -> void:
+	speed = player.SPEED * G_Vars.block_size
+	acceleration = player.acceleration
+	friction = player.friction
+	sprint_speed = player.SPRINT_SPEED * G_Vars.block_size
+	sprint_stamina = player.sprint_stamina
+	sprint_tiredness = player.sprint_tiredness
 
 #virtual method called when physhics is update updated
 func fixed_update(delta : float) -> void:

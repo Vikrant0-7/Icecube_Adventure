@@ -20,8 +20,9 @@ func _ready() -> void:
 	for child in get_children():
 		if child.has_method("enter"):
 			child.state_machine = self
+			child.start()
 	state.enter()
-	state.start()
+	
 
 
 

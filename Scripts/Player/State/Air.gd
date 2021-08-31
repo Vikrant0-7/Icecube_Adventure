@@ -3,29 +3,26 @@
 extends PlayerState
 
 
-export (int,1,4,1) var max_jumps = 2
+var max_jumps : int
 
-export var jump_height : float               #how many blocks high should player jump
-export var time_to_peak : float              #time it takes to reach jump_height
-export var time_to_descent : float           #time it takes to fall back to ground from jump_height 
+var jump_velocity : float  #calulates jump velocity
+var jump_gravity : float #calculates gravity during jump
 
-onready var jump_velocity : float = ((2.0 * jump_height * G_Vars.block_size) / time_to_peak) * -1.0  #calulates jump velocity
-onready var jump_gravity : float = ((-2.0 * jump_height * G_Vars.block_size) / (time_to_peak * time_to_peak)) * -1.0 #calculates gravity during jump
 #equals to jump_gravity if time_to_peak = time_to_descent
-onready var fall_gravity : float = ((-2.0 * jump_height * G_Vars.block_size) / (time_to_descent * time_to_descent)) * -1.0 #calculates normal gravity
-export (float,0,1,0.001) var drag = 0
+var fall_gravity : float  #calculates normal gravity
+var drag : float
 
+#powerups
+var can_jet : bool = false 
+var can_double_jump : bool = false
+var can_wall_jump : bool = false
+
+
+#
 var can_jump : bool = true
 var jumps : int = 0
 
-#powerups
-export var can_jet : bool = false 
-export var can_double_jump : bool = false
-export var can_wall_jump : bool = false
 
-
-onready var Run := get_parent().get_node("Run")
-onready var Idle := get_parent().get_node("Idle")
 onready var Jet := get_parent().get_node("Jet")
 
 
@@ -35,6 +32,18 @@ var air_accel : float  #acceleration in air supplied by other states
 var control_enabled : bool = true #for how long control is disabled i.e. player can move in one dir only
 var dir : float #dir in which player can move in controls disabled state
 var fall_slowly : bool = false #make player fall slowly to make it look cool. Supplied by other states
+
+
+func start() -> void:
+	jump_velocity = ((2.0 * player.jump_height * G_Vars.block_size) / player.time_to_peak) * -1.0
+	jump_gravity = ((-2.0 * player.jump_height * G_Vars.block_size) / (player.time_to_peak * player.time_to_peak)) * -1.0
+	fall_gravity = ((-2.0 * player.jump_height * G_Vars.block_size) / (player.time_to_descent * player.time_to_descent)) * -1.0
+	drag = player.drag
+	max_jumps = player.max_jumps
+	can_jet = player.can_jet
+	can_double_jump = player.can_double_jump
+	can_wall_jump = player.can_wall_jump
+
 
 #method is called when player's state is switched to this state
 func enter(msg := {}) -> void:

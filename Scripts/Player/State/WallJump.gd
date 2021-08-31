@@ -2,17 +2,17 @@
 
 extends PlayerState
 
-export (float,1,100) var WALL_JUMP_FORCE  #force by which player moves away from wall
-export (float,0,2,0.5) var no_control_state  #for how long player can't be controlled mid air
-export (float,0,500) var WALL_GRAVITY  #gravity when sliding with wall
 
-
-#converting units 
-#from blocks to pixel
-onready var wall_jump_force = WALL_JUMP_FORCE * G_Vars.block_size 
-onready var wall_gravity = WALL_GRAVITY * G_Vars.block_size
+var no_control_state : float  #for how long player can't be controlled mid air
+var wall_jump_force : float #force by which player moves away from wall
+var wall_gravity : float #gravity when sliding with wall
 
 var jump #jump force supplied by other states mainly air
+
+func start() -> void:
+	wall_jump_force = player.WALL_JUMP_FORCE * G_Vars.block_size
+	wall_gravity = player.WALL_GRAVITY * G_Vars.block_size
+	no_control_state = player.no_control_state
 
 func enter(msg := {}) -> void:
 	

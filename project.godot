@@ -124,6 +124,10 @@ duck={
 2d_physics/layer_5="Pickups"
 2d_physics/layer_6="MovingPlatforms"
 
+[locale]
+
+locale_filter=[ 0, [  ] ]
+
 [physics]
 
 common/enable_pause_aware_picking=true
