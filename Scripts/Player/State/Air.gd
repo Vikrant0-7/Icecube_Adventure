@@ -18,10 +18,10 @@ var can_double_jump : bool = false
 var can_wall_jump : bool = false
 
 
-#
+
 var can_jump : bool = true
 var jumps : int = 0
-
+var jump_power_reduction := 0.5
 
 onready var Jet := get_parent().get_node("Jet")
 
@@ -67,7 +67,7 @@ func enter(msg := {}) -> void:
 	if msg.has("_speed"):
 		air_speed = msg.get("_speed")
 	if msg.has("_accel"):
-		air_accel = msg.get("_accel") * 0.5
+		air_accel = msg.get("_accel")
 
 
 #virtual method called when physhics is update updated
@@ -76,7 +76,7 @@ func fixed_update(delta : float) -> void:
 	#double jump
 	if Input.is_action_just_pressed("Jump") and jumps < max_jumps and not player.is_on_floor() and can_double_jump:
 		jumps += 1
-		player.velocity.y = jump_velocity / (jumps * 0.75)
+		player.velocity.y = jump_velocity / (jumps * jump_power_reduction)
 	
 	player.velocity.y += get_gravity() * delta  #applying gravity
 	

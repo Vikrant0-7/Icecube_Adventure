@@ -7,6 +7,15 @@ var dir : Vector2
 
 var velocity : Vector2
 
+enum POWER_UP_TYPE{
+	STAMINA,
+	MID_AIR_JUMP,
+	WALL_JUMP,
+	JET_FUEL,
+	JET_POWER,
+	SPRINT_FATIGUE,
+	MID_AIR_POWER_REDUCTION
+}
 
 #to get input from users
 func get_input() -> void:
@@ -30,9 +39,23 @@ func _physics_process(delta : float):
 func lit() -> void:
 	print("yeh")
 
-
-
-
+func apply_power_up(type : int,parameter : float) -> void:
+	if type == POWER_UP_TYPE.STAMINA:
+		$State_Machine/Run.stamina += parameter
+	if type == POWER_UP_TYPE.JET_FUEL:
+		$State_Machine/Air.can_jet = true
+		$State_Machine/Jet.propultion_duration += parameter
+	if type == POWER_UP_TYPE.MID_AIR_JUMP:
+		$State_Machine/Air.can_double_jump = true
+		$State_Machine/Air.max_jumps += int(parameter)
+	if type == POWER_UP_TYPE.WALL_JUMP:
+		$State_Machine/Air.can_wall_jump = true
+	if type == POWER_UP_TYPE.SPRINT_FATIGUE:
+		$State_Machine/Run.sprint_tiredness += parameter
+	if type == POWER_UP_TYPE.JET_POWER:
+		$State_Machine/Jet.speed += Vector2(parameter,parameter)
+	if type == POWER_UP_TYPE.MID_AIR_POWER_REDUCTION:
+		$State_Machine/Air.jump_power_reduction += parameter
 
 
 ######################################
@@ -69,6 +92,9 @@ var speed: Vector2
 var WALL_JUMP_FORCE : float
 var no_control_state : float
 var  WALL_GRAVITY : float
+
+
+
 
 func _get(property: String):
 	
